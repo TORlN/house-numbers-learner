@@ -1,10 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import zero_one_loss
 from sklearn.metrics import mean_squared_error as mse
 from sklearn.metrics import accuracy_score
+
 
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.inspection import DecisionBoundaryDisplay
@@ -13,27 +10,33 @@ from sklearn.linear_model import LinearRegression    # Basic Linear Regression
 from sklearn.linear_model import Ridge               # Linear Regression with L2 regularization
 
 from sklearn.model_selection import KFold            # Cross-validation tools
-
 from sklearn.preprocessing import PolynomialFeatures # Feature transformations
-from sklearn.preprocessing import StandardScaler
 
-import requests                                      # reading data
 from io import StringIO
 
-seed = 1234
-
 import plotly.io as pio
-pio.renderers.default = 'notebook'  # You might want to change this for local environment
+pio.renderers.default = 'notebook'
 
 import pandas as pd
-import os
 
-# Adjust file paths as needed for your local file system
-file_path = './train_32x32.mat'
+import logreg
+import scale
+import load
+import knn
+import NN
 
-print(os.getcwd())
+X_tr, y_tr, X_te, y_te = load.load()
+X_tr, y_tr, X_te, y_te = scale.run(X_tr, y_tr, X_te, y_te)
+# logreg.run(X_tr, y_tr, X_te, y_te)
+# knn.run(X_tr, y_tr, X_te, y_te)
+# print("X_tr.shape: ", X_tr.shape)
+# print("y_tr.shape: ", y_tr.shape)
+# print("X_te.shape: ", X_te.shape)
+# print("y_te.shape: ", y_te.shape)
+NN.run(X_tr, y_tr, X_te, y_te) 
 
-# Check if file is in your specified local directory
-print("train_32x32.mat" in os.listdir('./'))
 
 
+# throw out logreg because of very high error and limited parameters to test
+# throw out knn because of how much time it takes to run
+# throw out NN because it doesnt understand depth of image (multiple colors in image)
