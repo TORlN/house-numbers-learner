@@ -7,11 +7,11 @@ import numpy as np
 def run(X_tr, y_tr, X_te, y_te):
     # Logistic Regression first
     best_c = cValue_Test(X_tr, y_tr, X_te, y_te)
-    # best_solver = solverTest(X_tr, y_tr, X_te, y_te, best_c)
-    # best_c = .0001
-    # best_solver = 'lbfgs'
-    # best_iter = iterTest(X_tr, y_tr, X_te, y_te, best_c, best_solver)
-    # best_iter = 100
+    best_solver = solverTest(X_tr, y_tr, X_te, y_te, best_c)
+    best_c = 0.0001
+    best_solver = "lbfgs"
+    best_iter = iterTest(X_tr, y_tr, X_te, y_te, best_c, best_solver)
+    print(best_iter)
 
 
 def cValue_Test(X_tr, y_tr, X_te, y_te):
