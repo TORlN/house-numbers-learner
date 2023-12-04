@@ -17,8 +17,6 @@ def run(X_tr, y_tr, X_te, y_te):
     Returns:
         None
     """
-
-    # neural networks via sklearn
     testing_error = []
 
     # best_slice, test_err = sliceTest(X_tr, y_tr, X_te, y_te, plot=False)
@@ -89,9 +87,9 @@ def run(X_tr, y_tr, X_te, y_te):
         plot=False,
     )
     testing_error.append(test_err)
-
-    plt.semilogx(range(len(testing_error)), testing_error, label="test error")
+    plt.plot(range(len(testing_error)), testing_error, label="test error")
     plt.legend()
+    plt.xticks(range(len(testing_error)), ["hidden", "activation", "solver", "learning", "batch", "alpha"])
     plt.show()
 
 
@@ -135,8 +133,8 @@ def sliceTest(X_tr, y_tr, X_te, y_te, plot=True):
 
     # Plot the train and test errors if plot=True
     if plot:
-        plt.semilogx(slices, train_error, label="train")
-        plt.semilogx(slices, test_error, label="test")
+        plt.plot(slices, train_error, label="train")
+        plt.plot(slices, test_error, label="test")
         plt.legend()
         plt.xticks(slices)
         plt.show()
@@ -192,10 +190,13 @@ def hiddenLayerTest(X_tr, y_tr, X_te, y_te, best_slice, plot=True):
 
     if plot:
         # Plot the train and test errors
-        plt.semilogx(hidden_layer_sizes, train_error, label="train")
-        plt.semilogx(hidden_layer_sizes, test_error, label="test")
+        plt.plot(range(len(hidden_layer_sizes)), train_error, label="train")
+        plt.plot(range(len(hidden_layer_sizes)), test_error, label="test")
         plt.legend()
-        plt.xticks(hidden_layer_sizes)
+        plt.xticks(
+            range(len(hidden_layer_sizes)),
+            ["100", "100, 100", "100, 100, 100", "100, 100, 100, 100", "100, 100, 100, 100, 100"],
+        )
         plt.show()
 
     # Find the best hidden layer size with the minimum test error
@@ -254,10 +255,10 @@ def activationTest(
 
     # Plot the train and test errors if plot=True
     if plot:
-        plt.semilogx(activations, train_error, label="train")
-        plt.semilogx(activations, test_error, label="test")
+        plt.plot(activations, train_error, label="train")
+        plt.plot(activations, test_error, label="test")
         plt.legend()
-        plt.xticks(activations)
+        plt.xticks(range(len(activations)), activations)
         plt.show()
 
     # Find the best activation function with the minimum test error
@@ -324,10 +325,10 @@ def solverTest(
 
     # Plot the train and test errors if plot=True
     if plot:
-        plt.semilogx(solvers, train_error, label="train")
-        plt.semilogx(solvers, test_error, label="test")
+        plt.plot(solvers, train_error, label="train")
+        plt.plot(solvers, test_error, label="test")
         plt.legend()
-        plt.xticks(solvers)
+        plt.xticks(range(len(solvers)), solvers)
         plt.show()
 
     # Find the best solver based on the minimum test error
@@ -349,13 +350,33 @@ def learningRateTest(
     best_solver,
     plot=True,
 ):
+    """
+    Perform a learning rate test for an MLPClassifier model.
+
+    Args:
+        X_tr (array-like): Training data features.
+        y_tr (array-like): Training data labels.
+        X_te (array-like): Test data features.
+        y_te (array-like): Test data labels.
+        best_slice (int): Number of samples to use from the training data.
+        best_hidden_layer_sizes (tuple): Sizes of the hidden layers.
+        best_activation (str): Activation function for the hidden layers.
+        best_solver (str): Solver for weight optimization.
+        plot (bool, optional): Whether to plot the training and test error. Defaults to True.
+
+    Returns:
+        tuple: A tuple containing the best learning rate and the minimum test error.
+    """
+    # Define the learning rates to test
     learning_rates = ["constant", "invscaling", "adaptive"]
     train_error = []
     test_error = []
     for lr in learning_rates:
         print("trying learning_rate: ", lr)
+        # Subset the training data based on the best slice
         X_tr_subset = X_tr[:best_slice, :]
         y_tr_subset = y_tr[:best_slice]
+        # Create an MLPClassifier with the specified parameters
         learner = MLPClassifier(
             random_state=1234,
             learning_rate=lr,
@@ -363,15 +384,19 @@ def learningRateTest(
             activation=best_activation,
             hidden_layer_sizes=best_hidden_layer_sizes,
         )
+        # Fit the learner on the subset of training data
         learner.fit(X_tr_subset, y_tr_subset.ravel())
+        # Calculate the training and test error
         train_error.append(zero_one_loss(y_tr, learner.predict(X_tr)))
         test_error.append(zero_one_loss(y_te, learner.predict(X_te)))
     if plot:
-        plt.semilogx(learning_rates, train_error, label="train")
-        plt.semilogx(learning_rates, test_error, label="test")
+        # Plot the training and test error for each learning rate
+        plt.plot(learning_rates, train_error, label="train")
+        plt.plot(learning_rates, test_error, label="test")
         plt.legend()
-        plt.xticks(learning_rates)
+        plt.xticks(range(len(learning_rates)), learning_rates)
         plt.show()
+    # Find the learning rate with the minimum test error
     best_learning_rate = learning_rates[np.argmin(test_error)]
     print(f"Best Learning Rate: {best_learning_rate}")
     return best_learning_rate, min(test_error)
@@ -441,8 +466,8 @@ def batchTest(
 
     # Plot the training and testing errors if plot is True
     if plot:
-        plt.semilogx(batch_sizes, train_error, label="train")
-        plt.semilogx(batch_sizes, test_error, label="test")
+        plt.plot(batch_sizes, train_error, label="train")
+        plt.plot(batch_sizes, test_error, label="test")
         plt.legend()
         plt.xticks(batch_sizes)
         plt.show()
@@ -519,8 +544,8 @@ def alphaTest(
 
     # Plot the train and test errors
     if plot:
-        plt.semilogx(alphas, train_error, label="train")
-        plt.semilogx(alphas, test_error, label="test")
+        plt.plot(alphas, train_error, label="train")
+        plt.plot(alphas, test_error, label="test")
         plt.legend()
         plt.xticks(alphas)
         plt.show()

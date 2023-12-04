@@ -1,7 +1,6 @@
 import logreg
 import scale
 import load
-
 import knn
 import NN
 
