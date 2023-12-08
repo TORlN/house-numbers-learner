@@ -7,15 +7,15 @@ import numpy as np
 def run(X_tr, y_tr, X_te, y_te):
     # Logistic Regression first
     best_c = cValue_Test(X_tr, y_tr, X_te, y_te)
-    best_solver = solverTest(X_tr, y_tr, X_te, y_te, best_c)
-    best_c = 0.0001
+    # best_c = 0.01
+    # best_solver = solverTest(X_tr, y_tr, X_te, y_te, best_c)
     best_solver = "lbfgs"
-    best_iter = iterTest(X_tr, y_tr, X_te, y_te, best_c, best_solver)
-    print(best_iter)
+    # best_iter = iterTest(X_tr, y_tr, X_te, y_te, best_c, best_solver)
+    # print(best_iter)
 
 
 def cValue_Test(X_tr, y_tr, X_te, y_te):
-    Cvals = [0.000001, 0.00001, 0.0001, 0.001]
+    Cvals = [0.000001, 0.00001, 0.0001, 0.001, .01, .1, 1, 10, 100]
     train_error = []
     test_error = []
     for C in Cvals:
@@ -24,9 +24,12 @@ def cValue_Test(X_tr, y_tr, X_te, y_te):
         learner.fit(X_tr, y_tr.ravel())
         train_error.append(zero_one_loss(y_tr, learner.predict(X_tr)))
         test_error.append(zero_one_loss(y_te, learner.predict(X_te)))
-
     plt.semilogx(Cvals, train_error, label="train")
     plt.semilogx(Cvals, test_error, label="test")
+    plt.xticks(Cvals)
+    plt.ylabel("Error")
+    plt.xlabel("C Value")
+    plt.title("Logistic Regression C Value Test")
     plt.legend()
     plt.show()
     best_c = Cvals[np.argmin(test_error)]

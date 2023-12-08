@@ -1,6 +1,7 @@
 import os
 import scipy.io
 import sys
+import preprocess
 def load():
     # Adjust file paths as needed for your local file system
     file_path = './train_32x32.mat'
@@ -33,4 +34,5 @@ def load():
     X_te = test_mat['X']
     y_te = test_mat['y']
     y_te = y_te.astype(int)
+    X_tr, y_tr, X_te, y_te = preprocess.run(X_tr, y_tr, X_te, y_te)
     return X_tr, y_tr, X_te, y_te
