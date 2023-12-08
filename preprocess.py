@@ -14,3 +14,12 @@ def greyscale(X_tr, X_te):
         grey_img = cv2.cvtColor(X_te[:,:,:,i],cv2.COLOR_BGR2GRAY)
         X_te_greyscale[i] = np.expand_dims(grey_img, axis=-1)
     return X_tr_greyscale, X_te_greyscale
+
+def convertZeros(y_tr, y_te):
+    for i in range(y_tr.shape[0]):
+        if y_tr[i] == 10:
+            y_tr[i] = 0
+    for i in range(y_te.shape[0]):
+        if y_te[i] == 10:
+            y_te[i] = 0
+    return y_tr, y_te

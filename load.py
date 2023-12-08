@@ -34,5 +34,7 @@ def load():
     X_te = test_mat['X']
     y_te = test_mat['y']
     y_te = y_te.astype(int)
-    X_tr, y_tr, X_te, y_te = preprocess.run(X_tr, y_tr, X_te, y_te)
+    # X_tr, y_tr, X_te, y_te = preprocess.run(X_tr, y_tr, X_te, y_te)
+    y_tr, y_te = preprocess.convertZeros(y_tr, y_te)
+    print("loading rgb data...")
     return X_tr, y_tr, X_te, y_te
