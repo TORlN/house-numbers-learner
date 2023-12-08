@@ -19,10 +19,10 @@ print("Shape of y_te:", y_te.shape)
 # logreg.run(X_tr, y_tr, X_te, y_te)
 # knn.run(X_tr, y_tr, X_te, y_te)
 
-start = time.time()
+# start = time.time()
 NN.run(X_tr, y_tr, X_te, y_te)
-end = time.time()
-print(f"This took {end-start} seconds")
+# end = time.time()
+# print(f"This took {end-start} seconds")
 
 # throw out logreg because of very high error and limited parameters to test
 # throw out knn because of how much time it takes to run

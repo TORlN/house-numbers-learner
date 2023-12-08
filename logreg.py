@@ -20,7 +20,7 @@ def cValue_Test(X_tr, y_tr, X_te, y_te):
     test_error = []
     for C in Cvals:
         print("trying C value: ", C)
-        learner = LogisticRegression(random_state=1234, C=C)
+        learner = LogisticRegression(random_state=1234, C=C, max_iter=1000)
         learner.fit(X_tr, y_tr.ravel())
         train_error.append(zero_one_loss(y_tr, learner.predict(X_tr)))
         test_error.append(zero_one_loss(y_te, learner.predict(X_te)))

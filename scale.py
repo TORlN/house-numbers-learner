@@ -6,8 +6,8 @@ def run(X_tr, y_tr, X_te, y_te):
     X_te = X_te.reshape(X_te.shape[0], -1)
 
     # Scale the data
-    # scaler = StandardScaler()
-    scaler = MinMaxScaler()
+    scaler = StandardScaler()
+    # scaler = MinMaxScaler()
     scaler.fit(X_tr)
     X_tr = scaler.transform(X_tr)
     X_te = scaler.transform(X_te)
